@@ -1,0 +1,77 @@
+create table car(car_no int primary key not null,
+car_name varchar(20) not null,
+car_price int not null,
+quantity int not null);
+insert into car values(3112,"tesla",11200000,2),
+(3232,"bmw",23000000,1),
+(2932,"audy",23000000,3),
+(8936,"tata nano",23000000,3);
+insert into car values (4322,"tata",17800000,4);
+select * from car;
+
+-- group by car price
+select count(car_name),car_price from car group by car_price;
+
+select count(car_name) as count_number,car_price from car group by car_price;
+-- using both group by and having keywords
+select count(car_name) from car group by car_price having car_price > 120000;
+
+-- 
+select count(*) from car group by car_price having car_price > 120000;
+
+
+
+
+-- creating new table
+create table visit(entry_date date not null,price int not null, duration int not null
+);
+insert into visit values('2023-05-02',10000,20),('2023-05-02',9000,80),
+('2023-05-01',900,10),('2023-05-02',10000,20);
+insert into visit values('2023-04-21',10000,20),('2023-04-30',9000,80),
+('2023-05-01',900,10),('2023-04-30',1000,5);
+select * from visit;
+select entry_date, count(*) from visit group by entry_date;
+
+
+
+
+
+-- extract keyword  examles
+-- extract is used to extract the from the date of only year/day/month  whatever we want
+select extract(year from entry_date) as year,
+extract(month from entry_date) as month,
+round(avg(price),8) from visit group by extract(year from entry_date),extract(month from entry_date);
+-- round fun round the decimal points upto 2 decimals
+select * from visit;
+
+
+select extract(year from entry_date) as year,
+extract(month from entry_date) as month,
+extract(day from entry_date) as day,
+round(avg(price),8) from visit 
+group by extract(year from entry_date),extract(month from entry_date), 
+extract(day from entry_date)
+order by extract(year from entry_date),extract(month from entry_date);
+
+select * from visit;
+
+-- selecting the date from entry_date having more than 1 visits are grouped
+select entry_date , round(avg(price),3) as avg_price from visit
+group by entry_date having count(*)  > 1 order by entry_date;
+
+-- selecting the date from entry_date having more than 3 visits are grouped
+select entry_date , round(avg(price),3) as avg_price from visit
+group by entry_date having count(*)  > 3 order by entry_date;
+
+select * from visit;
+
+
+-- including one more condition i.e., having the duration more than certain period
+select entry_date, round(avg(price),5) as avg_price from visit where duration > 30
+group by entry_date having count(*) >0 order by entry_date;
+
+
+
+select city ,count(*) as customer_city from shopping group by city;
+select * from shopping;
+
